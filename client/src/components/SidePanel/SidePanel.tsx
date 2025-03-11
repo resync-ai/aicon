@@ -171,6 +171,21 @@ const SidePanel = ({
             : 'opacity-100',
         )}
       >
+      {/* todo delet */}
+        {interfaceConfig.modelSelect === true && (
+          <div
+            className={cn(
+              'sticky left-0 right-0 top-0 z-[100] flex h-[52px] flex-wrap items-center justify-center bg-background',
+              isCollapsed ? 'h-[52px]' : 'px-2',
+            )}
+          >
+            <Switcher
+              isCollapsed={isCollapsed}
+              endpointKeyProvided={keyProvided}
+              endpoint={endpoint}
+            />
+          </div>
+        )}
         <Nav
           resize={panelRef.current?.resize}
           isCollapsed={isCollapsed}
