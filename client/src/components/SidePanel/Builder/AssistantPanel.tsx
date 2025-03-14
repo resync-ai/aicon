@@ -238,7 +238,7 @@ export default function AssistantPanel({
           {/* Select Button */}
           {assistant_id && (
             <button
-              className="btn btn-primary focus:shadow-outline mx-2 mt-1 h-[40px] rounded bg-green-500 px-4 py-2 font-semibold text-white hover:bg-green-400 focus:border-green-500 focus:outline-none focus:ring-0"
+              className="btn btn-primary focus:shadow-outline mx-2 mt-1 h-[40px] rounded bg-[#F98C10] px-4 py-2 font-semibold text-white hover:bg-[#E6820F] focus:border-[#E6820F] focus:outline-none focus:ring-0"
               type="button"
               disabled={!assistant_id}
               onClick={(e) => {
