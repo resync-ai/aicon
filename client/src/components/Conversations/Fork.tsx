@@ -163,7 +163,7 @@ export default function Fork({
   return (
     <Popover.Root>
       <Popover.Trigger asChild>
-        <button
+        {/* <button
           className={cn(
             'hover-button rounded-lg p-1.5',
             'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black dark:focus-visible:ring-white',
@@ -196,8 +196,8 @@ export default function Fork({
           type="button"
           title={localize('com_ui_fork')}
         >
-          <GitFork size="19" />
-        </button>
+          <GitFork className="h-4 w-4 hover:text-gray-500 dark:hover:bg-gray-700 dark:hover:text-gray-200 disabled:dark:hover:text-gray-400" />
+        </button> */}
       </Popover.Trigger>
       <Popover.Portal>
         <div dir="ltr">
