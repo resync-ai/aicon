@@ -745,5 +745,19 @@
     "com_ui_yes": "Ano",
     "com_ui_zoom": "Přiblížit",
     "com_user_message": "Vy",
-    "com_warning_resubmit_unsupported": "Opětovné odeslání AI zprávy není pro tento koncový bod podporováno."
+    "com_warning_resubmit_unsupported": "Opětovné odeslání AI zprávy není pro tento koncový bod podporováno.",
+    "com_ui_feedback_thank_you": "Děkujeme za vaše zpětnou vazbu!",
+    "com_ui_feedback_more_information": "Poskytněte další zpětnou vazbu",
+    "com_ui_feedback_positive": "Dobrá odpověď",
+    "com_ui_feedback_negative": "Špatná odpověď",
+    "com_ui_feedback_more": "Více...",
+    "com_ui_feedback_tag_memory": "Neměl byste použít paměť",
+    "com_ui_feedback_tag_style": "Nezapadá mi to do stylu",
+    "com_ui_feedback_tag_incorrect": "Není fakticky správně",
+    "com_ui_feedback_tag_instructions": "Nedodržel instrukce",
+    "com_ui_feedback_tag_refused": "Odmítnul, když neměl",
+    "com_ui_feedback_tag_lazy": "Líný...",
+    "com_ui_feedback_tag_unsafe": "Nebezpečný nebo problematický",
+    "com_ui_feedback_tag_biased": "Nevyvážený",
+    "com_ui_feedback_tag_other": "Jiné"
 }
