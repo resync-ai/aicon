@@ -19,9 +19,9 @@ const defaultContextValue: ProviderValue = {
 
 export const isDark = (theme: string): boolean => {
   if (theme === 'system') {
-    return window.matchMedia('(prefers-color-scheme: light)').matches;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
-  return theme === 'light';
+  return theme === 'dark';
 };
 
 export const ThemeContext = createContext<ProviderValue>(defaultContextValue);
@@ -43,7 +43,7 @@ export const ThemeProvider = ({ initialTheme, children }) => {
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const changeThemeOnSystemChange = () => {
-      rawSetTheme(mediaQuery.matches ? 'light' : 'light');
+      rawSetTheme(mediaQuery.matches ? 'dark' : 'light');
     };
 
     mediaQuery.addEventListener('change', changeThemeOnSystemChange);
