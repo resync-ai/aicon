@@ -18,6 +18,8 @@ export type TMessages = TMessage[];
 
 /* TODO: Cleanup EndpointOption types */
 export type TEndpointOption = {
+  spec?: string | null;
+  iconURL?: string | null;
   endpoint: EModelEndpoint;
   endpointType?: EModelEndpoint;
   modelDisplayLabel?: string;
@@ -57,7 +59,6 @@ export type TSubmission = {
   isTemporary: boolean;
   messages: TMessage[];
   isRegenerate?: boolean;
-  conversationId?: string;
   initialResponse?: TMessage;
   conversation: Partial<TConversation>;
   endpointOption: TEndpointOption;
@@ -115,6 +116,7 @@ export type TUser = {
   role: string;
   provider: string;
   plugins?: string[];
+  twoFactorEnabled?: boolean;
   backupCodes?: TBackupCode[];
   createdAt: string;
   updatedAt: string;
@@ -530,3 +532,21 @@ export type TAcceptTermsResponse = {
 };
 
 export type TBannerResponse = TBanner | null;
+
+export type TUpdateFeedbackRequest = {
+  rating?: 'thumbsUp' | 'thumbsDown' | undefined;
+  ratingContent?: {
+    tags?: string[];
+    text?: string;
+  };
+};
+
+export type TUpdateFeedbackResponse = {
+  messageId: string;
+  conversationId: string;
+  rating?: 'thumbsUp' | 'thumbsDown' | undefined;
+  ratingContent?: {
+    tags?: string[];
+    text?: string;
+  };
+};

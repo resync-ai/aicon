@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { Tools } from './types/assistants';
 import type { TMessageContentParts, FunctionTool, FunctionToolCall } from './types/assistants';
 import type { TFile } from './types/files';
+import { feedbackTags, TFeedbackContent, TFeedbackRating } from './feedback';
 
 export const isUUID = z.string().uuid();
 
@@ -47,6 +48,7 @@ export enum BedrockProviders {
   Meta = 'meta',
   MistralAI = 'mistral',
   StabilityAI = 'stability',
+  DeepSeek = 'deepseek',
 }
 
 export const getModelKey = (endpoint: EModelEndpoint | string, model: string) => {
@@ -157,6 +159,7 @@ export const defaultAgentFormValues = {
   projectIds: [],
   artifacts: '',
   isCollaborative: false,
+  recursion_limit: undefined,
   [Tools.execute_code]: false,
   [Tools.file_search]: false,
 };
@@ -228,7 +231,7 @@ export const googleSettings = {
   },
   maxOutputTokens: {
     min: 1 as const,
-    max: 8192 as const,
+    max: 64000 as const,
     step: 1 as const,
     default: 8192 as const,
   },
@@ -463,6 +466,11 @@ export const tAgentOptionsSchema = z.object({
   temperature: z.number().default(agentOptionSettings.temperature.default),
 });
 
+export type TMessageFeedback = {
+  rating?: TFeedbackRating;
+  ratingContent?: TFeedbackContent;
+};
+
 export const tMessageSchema = z.object({
   messageId: z.string(),
   endpoint: z.string().optional(),
@@ -496,6 +504,15 @@ export const tMessageSchema = z.object({
   thread_id: z.string().optional(),
   /* frontend components */
   iconURL: z.string().nullable().optional(),
+  rating: z.enum(['thumbsUp', 'thumbsDown']).optional(),
+  ratingContent: z
+    .object({
+      tags: z
+        .array(z.enum([...feedbackTags.thumbsUp, ...feedbackTags.thumbsDown] as const))
+        .optional(),
+      text: z.string().optional(),
+    })
+    .optional(),
 });
 
 export type TAttachmentMetadata = { messageId: string; toolCallId: string };
@@ -643,6 +660,8 @@ export const tConvoUpdateSchema = tConversationSchema.merge(
 export const tQueryParamsSchema = tConversationSchema
   .pick({
     // librechat settings
+    /** The model spec to be used */
+    spec: true,
     /** The AI context window, overrides the system-defined window as determined by `model` value */
     maxContextTokens: true,
     /**
@@ -1152,7 +1171,6 @@ export const compactAgentsSchema = tConversationSchema
     iconURL: true,
     greeting: true,
     agent_id: true,
-    resendFiles: true,
     instructions: true,
     additional_instructions: true,
   })

@@ -1,15 +1,54 @@
 import { memo } from 'react';
-import MaximizeChatSpace from './MaximizeChatSpace';
 import FontSizeSelector from './FontSizeSelector';
-import SendMessageKeyEnter from './EnterToSend';
-import ShowCodeSwitch from './ShowCodeSwitch';
 import { ForkSettings } from './ForkSettings';
 import ChatDirection from './ChatDirection';
-import ShowThinking from './ShowThinking';
-import LaTeXParsing from './LaTeXParsing';
-import ScrollButton from './ScrollButton';
-import ModularChat from './ModularChat';
-import SaveDraft from './SaveDraft';
+import ToggleSwitch from '../ToggleSwitch';
+import store from '~/store';
+
+const toggleSwitchConfigs = [
+  {
+    stateAtom: store.enterToSend,
+    localizationKey: 'com_nav_enter_to_send',
+    switchId: 'enterToSend',
+    hoverCardText: 'com_nav_info_enter_to_send',
+    key: 'enterToSend',
+  },
+  {
+    stateAtom: store.maximizeChatSpace,
+    localizationKey: 'com_nav_maximize_chat_space',
+    switchId: 'maximizeChatSpace',
+    hoverCardText: undefined,
+    key: 'maximizeChatSpace',
+  },
+  {
+    stateAtom: store.centerFormOnLanding,
+    localizationKey: 'com_nav_center_chat_input',
+    switchId: 'centerFormOnLanding',
+    hoverCardText: undefined,
+    key: 'centerFormOnLanding',
+  },
+  {
+    stateAtom: store.showThinking,
+    localizationKey: 'com_nav_show_thinking',
+    switchId: 'showThinking',
+    hoverCardText: undefined,
+    key: 'showThinking',
+  },
+  {
+    stateAtom: store.showScrollButton,
+    localizationKey: 'com_nav_scroll_button',
+    switchId: 'showScrollButton',
+    hoverCardText: undefined,
+    key: 'showScrollButton',
+  },
+  {
+    stateAtom: store.saveBadgesState,
+    localizationKey: 'com_nav_save_badges_state',
+    switchId: 'showBadges',
+    hoverCardText: 'com_nav_info_save_badges_state',
+    key: 'showBadges',
+  },
+];
 
 function Chat() {
   return (
@@ -20,31 +59,17 @@ function Chat() {
       <div className="pb-3">
         <ChatDirection />
       </div>
-      <div className="pb-3">
-        <SendMessageKeyEnter />
-      </div>
-      <div className="pb-3">
-        <MaximizeChatSpace />
-      </div>
-      {/* <div className="pb-3">
-        <ShowCodeSwitch />
-      </div>
-      <div className="pb-3">
-        <SaveDraft />
-      </div> */}
-      <div className="pb-3">
-        <ScrollButton />
-      </div>
-      {/* <ForkSettings />
-      <div className="pb-3">
-        <ModularChat />
-      </div>
-      <div className="pb-3">
-        <LaTeXParsing />
-      </div> */}
-      <div className="pb-3">
-        <ShowThinking />
-      </div>
+      {toggleSwitchConfigs.map((config) => (
+        <div key={config.key} className="pb-3">
+          <ToggleSwitch
+            stateAtom={config.stateAtom}
+            localizationKey={config.localizationKey}
+            hoverCardText={config.hoverCardText}
+            switchId={config.switchId}
+          />
+        </div>
+      ))}
+      <ForkSettings />
     </div>
   );
 }

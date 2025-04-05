@@ -775,19 +775,23 @@ export function getBanner(): Promise<t.TBannerResponse> {
   return request.get(endpoints.banner());
 }
 
+export function updateFeedback(
+  conversationId: string,
+  messageId: string,
+  payload: t.TUpdateFeedbackRequest,
+): Promise<t.TUpdateFeedbackResponse> {
+  return request.put(endpoints.feedback(conversationId, messageId), payload);
+}
+
 export function enableTwoFactor(): Promise<t.TEnable2FAResponse> {
   return request.get(endpoints.enableTwoFactor());
 }
 
-export function verifyTwoFactor(
-  payload: t.TVerify2FARequest,
-): Promise<t.TVerify2FAResponse> {
+export function verifyTwoFactor(payload: t.TVerify2FARequest): Promise<t.TVerify2FAResponse> {
   return request.post(endpoints.verifyTwoFactor(), payload);
 }
 
-export function confirmTwoFactor(
-  payload: t.TVerify2FARequest,
-): Promise<t.TVerify2FAResponse> {
+export function confirmTwoFactor(payload: t.TVerify2FARequest): Promise<t.TVerify2FAResponse> {
   return request.post(endpoints.confirmTwoFactor(), payload);
 }
 

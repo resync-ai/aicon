@@ -238,6 +238,9 @@ export const userTerms = () => '/api/user/terms';
 export const acceptUserTerms = () => '/api/user/terms/accept';
 export const banner = () => '/api/banner';
 
+export const feedback = (conversationId: string, messageId: string) =>
+  `/api/messages/${conversationId}/${messageId}/feedback`;
+
 // Two-Factor Endpoints
 export const enableTwoFactor = () => '/api/auth/2fa/enable';
 export const verifyTwoFactor = () => '/api/auth/2fa/verify';
