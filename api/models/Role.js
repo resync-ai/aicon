@@ -145,7 +145,7 @@ const initializeRoles = async function () {
       // Ensure role.permissions is defined.
       role.permissions = role.permissions || {};
       // For each permission type in defaults, add it if missing.
-      for (const permType of Object.keys(defaultPerms)) {
+      for (const permType of Object.keys(defaultPerms ?? {})) {
         if (role.permissions[permType] == null) {
           role.permissions[permType] = defaultPerms[permType];
         }

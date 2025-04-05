@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { TFeedbackRating, TFeedbackContent } from 'librechat-data-provider';
 
 // @ts-ignore
 export interface IMessage extends Document {
@@ -35,6 +36,8 @@ export interface IMessage extends Document {
   expiredAt?: Date;
   createdAt?: Date;
   updatedAt?: Date;
+  rating?: TFeedbackRating;
+  ratingContent?: TFeedbackContent;
 }
 
 const messageSchema: Schema<IMessage> = new Schema(
@@ -173,6 +176,24 @@ const messageSchema: Schema<IMessage> = new Schema(
     */
     expiredAt: {
       type: Date,
+    },
+    rating: {
+      type: String,
+      enum: ['thumbsUp', 'thumbsDown'],
+      default: undefined,
+    },
+    ratingContent: {
+      type: {
+        tags: {
+          type: [String],
+          default: undefined,
+        },
+        text: {
+          type: String,
+          default: undefined,
+        },
+      },
+      default: undefined,
     },
   },
   { timestamps: true },
