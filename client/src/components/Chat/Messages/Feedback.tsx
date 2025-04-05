@@ -61,7 +61,9 @@ export default function Feedback({
         feedback={feedback}
         onChange={handleChange}
       />
-      <FeedbackButtons isLast={isLast} rating={feedback.rating} onFeedback={handleRatingClick} />
+      {!feedback.rating && isLast && (
+        <FeedbackButtons isLast={isLast} rating={feedback.rating} onFeedback={handleRatingClick} />
+      )}
     </>
   );
 }
