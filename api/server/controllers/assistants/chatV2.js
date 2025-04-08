@@ -322,6 +322,7 @@ const chatV2 = async (req, res) => {
           assistant_id,
           thread_id,
           model: assistant_id,
+          uid: 'test',
         },
       });
     };
@@ -359,6 +360,7 @@ const chatV2 = async (req, res) => {
 
         // todo: retry logic
         response = await runAssistant({ openai, thread_id, run_id });
+        console.log(response, '2222');
         return;
       }
 
@@ -428,6 +430,7 @@ const chatV2 = async (req, res) => {
       thread_id,
       model: assistant_id,
       endpoint,
+      uid: response?.messages?.[response?.messages?.length - 1]?.id ?? '',
     };
 
     sendMessage(res, {
@@ -437,6 +440,7 @@ const chatV2 = async (req, res) => {
         parentMessageId,
         thread_id,
       },
+      uid: responseMessage.uid,
     });
     res.end();
 

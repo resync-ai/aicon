@@ -72,6 +72,13 @@ class OpenAIClient extends BaseClient {
     this.streamHandler;
   }
 
+  getClient() {
+    return new OpenAI({
+      fetch: this.fetch,
+      apiKey: this.apiKey,
+    });
+  }
+
   // TODO: PluginsClient calls this 3x, unneeded
   setOptions(options) {
     if (this.options && !this.options.replaceOptions) {
@@ -1230,9 +1237,9 @@ ${convo}
 
         opts.baseURL = this.langchainProxy
           ? constructAzureURL({
-            baseURL: this.langchainProxy,
-            azureOptions: this.azure,
-          })
+              baseURL: this.langchainProxy,
+              azureOptions: this.azure,
+            })
           : this.azureEndpoint.split(/(?<!\/)\/(chat|completion)\//)[0];
 
         opts.defaultQuery = { 'api-version': this.azure.azureOpenAIApiVersion };
@@ -1492,7 +1499,7 @@ ${convo}
       }
 
       const { message, finish_reason } = choices[0] ?? {};
-      this.metadata = { finish_reason };
+      this.metadata = { finish_reason, uid: chatCompletion.id };
 
       logger.debug('[OpenAIClient] chatCompletion response', chatCompletion);
 

@@ -16,6 +16,7 @@ const idSchema = z.string().uuid();
  * @param {string} params.messageId - The unique identifier for the message.
  * @param {string} params.newMessageId - The new unique identifier for the message (if applicable).
  * @param {string} params.conversationId - The identifier of the conversation.
+ * @param {string} params.uid - The unique identifier for the message.
  * @param {string} [params.parentMessageId] - The identifier of the parent message, if any.
  * @param {string} params.sender - The identifier of the sender.
  * @param {string} params.text - The text content of the message.
@@ -51,6 +52,7 @@ async function saveMessage(req, params, metadata) {
       ...params,
       user: req.user.id,
       messageId: params.newMessageId || params.messageId,
+      uid: params.uid ?? '',
     };
 
     if (req?.body?.isTemporary) {
@@ -97,7 +99,9 @@ async function saveMessage(req, params, metadata) {
         };
       } catch (findError) {
         // If the findOne also fails, log it but don't crash
-        logger.warn(`Could not retrieve existing message with ID ${params.messageId}: ${findError.message}`);
+        logger.warn(
+          `Could not retrieve existing message with ID ${params.messageId}: ${findError.message}`,
+        );
         return {
           ...params,
           messageId: params.messageId,
@@ -247,6 +251,7 @@ async function updateMessage(req, message, metadata) {
       tokenCount: updatedMessage.tokenCount,
       rating: updatedMessage.rating,
       ratingContent: updatedMessage.ratingContent,
+      uid: updatedMessage.uid,
     };
   } catch (err) {
     logger.error('Error updating message:', err);

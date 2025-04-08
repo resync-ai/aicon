@@ -534,6 +534,7 @@ export type TAcceptTermsResponse = {
 export type TBannerResponse = TBanner | null;
 
 export type TUpdateFeedbackRequest = {
+  endpoint: string;
   rating?: 'thumbsUp' | 'thumbsDown' | undefined;
   ratingContent?: {
     tags?: string[];

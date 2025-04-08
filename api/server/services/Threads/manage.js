@@ -153,6 +153,7 @@ async function saveAssistantMessage(req, params) {
     isCreatedByUser: false,
     text: params.text,
     unfinished: false,
+    uid: params.uid,
     // tokenCount,
   });
 
@@ -185,6 +186,7 @@ async function saveAssistantMessage(req, params) {
 async function addThreadMetadata({ openai, thread_id, messageId, messages }) {
   const promises = [];
   for (const message of messages) {
+    console.log(message);
     promises.push(
       openai.beta.threads.messages.update(thread_id, message.id, {
         metadata: {

@@ -23,6 +23,7 @@ export interface IMessage extends Document {
   finish_reason?: string;
   _meiliIndex?: boolean;
   files?: unknown[];
+  uid?: string;
   plugin?: {
     latest?: string;
     inputs?: unknown[];
@@ -176,6 +177,10 @@ const messageSchema: Schema<IMessage> = new Schema(
     */
     expiredAt: {
       type: Date,
+    },
+    uid: {
+      type: String,
+      default: '',
     },
     rating: {
       type: String,

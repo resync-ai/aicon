@@ -7,7 +7,9 @@ import {
   TUpdateFeedbackRequest,
   TFeedbackRating,
   TFeedbackContent,
+  QueryKeys,
 } from 'librechat-data-provider';
+import type { TMessage } from 'librechat-data-provider';
 import type { TMessageProps } from '~/common';
 import {
   useChatContext,
@@ -20,6 +22,7 @@ import { useAuthContext } from '~/hooks/AuthContext';
 import useLocalize from '~/hooks/useLocalize';
 import store from '~/store';
 import { useUpdateFeedbackMutation } from 'librechat-data-provider/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 
 export type TMessageActions = Pick<
   TMessageProps,
@@ -29,8 +32,9 @@ export type TMessageActions = Pick<
 };
 export default function useMessageActions(props: TMessageActions) {
   const localize = useLocalize();
-  const { user } = useAuthContext();
+  const queryClient = useQueryClient();
   const UsernameDisplay = useRecoilValue<boolean>(store.UsernameDisplay);
+  const { user } = useAuthContext();
   const { message, currentEditId, setCurrentEditId, isMultiMessage } = props;
 
   const {
@@ -131,7 +135,11 @@ export default function useMessageActions(props: TMessageActions) {
         return;
       }
       // Format the payload based on the direct content parameter
-      const formattedPayload: TUpdateFeedbackRequest = { rating };
+      const formattedPayload: TUpdateFeedbackRequest = {
+        rating,
+        endpoint: conversation?.endpoint ?? 'openAI',
+        uid: message?.uid ?? '',
+      };
 
       if (content) {
         formattedPayload.ratingContent = {

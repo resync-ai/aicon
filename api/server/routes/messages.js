@@ -1,5 +1,5 @@
 const express = require('express');
-const { ContentTypes } = require('librechat-data-provider');
+const { ContentTypes, defaultRetrievalModels } = require('librechat-data-provider');
 const {
   saveConvo,
   saveMessage,
@@ -10,6 +10,8 @@ const {
 } = require('~/models');
 const { findAllArtifacts, replaceArtifactContent } = require('~/server/services/Artifacts/update');
 const { requireJwtAuth, validateMessageReq } = require('~/server/middleware');
+const { initializeClient } = require('~/server/services/Endpoints/openAI');
+const { getOpenAIClient } = require('~/server/controllers/assistants/helpers');
 const { countTokens } = require('~/server/utils');
 const { logger } = require('~/config');
 
@@ -215,6 +217,51 @@ router.put('/:conversationId/:messageId/feedback', validateMessageReq, async (re
 
     // Update the message using updateMessage to ensure consistency
     const updatedMessage = await updateMessage(req, updateParams);
+
+    try {
+      if (req.body.endpoint === 'openAI' && req.body.uid) {
+        const openaiClient = (await initializeClient({ req, res })).client.getClient();
+
+        const updateResult = await openaiClient.chat.completions.update(req.body.uid, {
+          metadata: {
+            rating: updatedMessage.rating,
+            ratingContent: updatedMessage.ratingContent,
+            user: req.user.email,
+          },
+        });
+      }
+
+      if (
+        req.body.endpoint === 'assistants' &&
+        req.body.thread_id &&
+        defaultRetrievalModels.includes(req.body.model)
+      ) {
+        const message = (await getMessages({ conversationId, messageId }, 'uid'))?.[0];
+
+        if (!message || !message.uid) {
+          console.log('message or uid not found');
+          return;
+        }
+
+        const { openai: _openai } = await getOpenAIClient({
+          req,
+          res,
+          endpointOption: 'openai',
+          initAppClient: true,
+        });
+
+        await _openai.beta.threads.messages.update(req.body.thread_id, message.uid, {
+          metadata: {
+            rating: updatedMessage.rating,
+            ratingContent: updatedMessage.ratingContent,
+            user: req.user.email,
+            assistant: updatedMessage.assistant_id ?? 'No assistant',
+          },
+        });
+      }
+    } catch (error) {
+      logger.error('Error updating message feedback:', error);
+    }
 
     if (!updatedMessage) {
       return res.status(400).json({ error: 'Failed to update feedback' });

@@ -114,6 +114,7 @@ const sendResponse = (req, res, data, errorMessage) => {
   if (errorMessage) {
     return sendError(req, res, { ...data, text: errorMessage });
   }
+
   return sendMessage(res, data);
 };
 

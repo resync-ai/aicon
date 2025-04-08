@@ -1,6 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useRecoilValue } from 'recoil';
-import type { TMessageContentParts } from 'librechat-data-provider';
+import {
+  type TFeedbackRating,
+  type TUpdateFeedbackRequest,
+  type TFeedbackContent,
+  type TMessageContentParts,
+} from 'librechat-data-provider';
 import type { TMessageProps, TMessageIcon } from '~/common';
 import MessageIcon from '~/components/Chat/Messages/MessageIcon';
 import { useMessageHelpers, useLocalize } from '~/hooks';
@@ -12,6 +17,7 @@ import HoverButtons from './HoverButtons';
 import SubRow from './SubRow';
 import { cn } from '~/utils';
 import store from '~/store';
+import { useUpdateFeedbackMutation } from 'librechat-data-provider/react-query';
 
 export default function Message(props: TMessageProps) {
   const localize = useLocalize();
@@ -69,6 +75,37 @@ export default function Message(props: TMessageProps) {
       message?.endpoint,
       message?.isCreatedByUser,
     ],
+  );
+
+  const feedbackMutation = useUpdateFeedbackMutation(
+    conversation?.conversationId || '',
+    message?.messageId || '',
+  );
+
+  const handleFeedback = useCallback(
+    (rating: TFeedbackRating, content?: TFeedbackContent) => {
+      if (!conversation?.conversationId || !message?.messageId || !feedbackMutation?.mutate) {
+        console.error('Feedback mutation is not available.');
+        return;
+      }
+
+      const formattedPayload: TUpdateFeedbackRequest = {
+        rating,
+        endpoint: conversation?.endpoint ?? 'assistants',
+        uid: message?.uid ?? '',
+        thread_id: message?.thread_id ?? '',
+        model: conversation?.model ?? '',
+      };
+
+      if (content) {
+        formattedPayload.ratingContent = {
+          tags: Array.isArray(content.tags) ? content.tags : [],
+          text: typeof content.text === 'string' ? content.text : '',
+        };
+      }
+      feedbackMutation.mutate(formattedPayload);
+    },
+    [message, feedbackMutation, conversation?.conversationId, conversation?.endpoint],
   );
 
   if (!message) {
@@ -146,6 +183,8 @@ export default function Message(props: TMessageProps) {
                       handleContinue={handleContinue}
                       latestMessage={latestMessage}
                       isLast={isLast}
+                      handleFeedback={handleFeedback}
+                      rated={{ rating: message?.rating ?? undefined }}
                     />
                   </SubRow>
                 )}
