@@ -774,5 +774,5 @@
     "com_endpoint_presence_penalty": "Penalizace přítomnosti",
     "com_endpoint_stop_placeholder": "Zadejte text pro zastavení",
     "com_endpoint_openai_stop": "Model za svou odpověď zadá text pro zastavení",
-    "com_endpoint_openai_prompt_prefix_placeholder": "Jsi účetní asistent který...",
+    "com_endpoint_openai_prompt_prefix_placeholder": "Jsi účetní asistent který..."
 }
