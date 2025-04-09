@@ -12,7 +12,7 @@ cache: true
 
 # Custom interface configuration
 interface:
-  customWelcome: "Welcome to LibreChat! Enjoy your experience."
+  customWelcome: 'Vítej v Aicons. Jak ti můžu dnes pomoci?'
   # Privacy policy settings
   privacyPolicy:
     externalUrl: 'https://librechat.ai/privacy-policy'
@@ -23,7 +23,7 @@ interface:
     externalUrl: 'https://librechat.ai/tos'
     openNewTab: true
     modalAcceptance: true
-    modalTitle: "Terms of Service for LibreChat"
+    modalTitle: 'Terms of Service for LibreChat'
     modalContent: |
       # Terms and Conditions for LibreChat
 
@@ -77,7 +77,6 @@ registration:
   # allowedDomains:
   # - "gmail.com"
 
-
 # Example Balance settings
 # balance:
 #   enabled: false
@@ -117,9 +116,9 @@ registration:
 # Example Actions Object Structure
 actions:
   allowedDomains:
-    - "swapi.dev"
-    - "librechat.ai"
-    - "google.com"
+    - 'swapi.dev'
+    - 'librechat.ai'
+    - 'google.com'
 
 # Example MCP Servers Object Structure
 # mcpServers:
@@ -253,15 +252,15 @@ endpoints:
       modelDisplayLabel: 'OpenRouter'
 
     # Portkey AI Example
-    - name: "Portkey"
-      apiKey: "dummy"
+    - name: 'Portkey'
+      apiKey: 'dummy'
       baseURL: 'https://api.portkey.ai/v1'
       headers:
-          x-portkey-api-key: '${PORTKEY_API_KEY}'
-          x-portkey-virtual-key: '${PORTKEY_OPENAI_VIRTUAL_KEY}'
+        x-portkey-api-key: '${PORTKEY_API_KEY}'
+        x-portkey-virtual-key: '${PORTKEY_OPENAI_VIRTUAL_KEY}'
       models:
-          default: ['gpt-4o-mini', 'gpt-4o', 'chatgpt-4o-latest']
-          fetch: true
+        default: ['gpt-4o-mini', 'gpt-4o', 'chatgpt-4o-latest']
+        fetch: true
       titleConvo: true
       titleModel: 'current_model'
       summarize: false

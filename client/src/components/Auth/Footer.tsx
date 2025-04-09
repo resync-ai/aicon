@@ -31,15 +31,7 @@ function Footer({ startupConfig }: { startupConfig: TStartupConfig | null | unde
     </a>
   );
 
-  return (
-    <div className="align-end m-4 flex justify-center gap-2" role="contentinfo">
-      {privacyPolicyRender}
-      {privacyPolicyRender && termsOfServiceRender && (
-        <div className="border-r-[1px] border-gray-300 dark:border-gray-600" />
-      )}
-      {termsOfServiceRender}
-    </div>
-  );
+  return <div className="align-end m-4 flex justify-center gap-2" role="contentinfo"></div>;
 }
 
 export default Footer;
